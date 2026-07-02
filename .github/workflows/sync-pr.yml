@@ -1,0 +1,41 @@
+name: Sync via Pull Request
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  create-sync-prs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: PR para staging (master -> staging)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --base staging \
+            --head master \
+            --title "🔄 Sync: Atualização do master para staging" \
+            --body "PR automatizado para promover as alterações da master." \
+          || echo "PR já existe ou não há alterações."
+
+      - name: PR para dev (master -> dev)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --base dev \
+            --head master \
+            --title "🔄 Sync: Atualização do master para dev" \
+            --body "PR automatizado para promover as alterações da master." \
+          || echo "PR já existe ou não há alterações."
