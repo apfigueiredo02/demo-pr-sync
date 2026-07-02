@@ -6,7 +6,8 @@ def main():
     print("Versão: v2.0 - Estado Inicial")
     print("==================================")
 
-    print("commit 1 via pr sync")
+    print("commit 2 via pr sync")
+    print("commit")
 
 if __name__ == "__main__":
     main()
